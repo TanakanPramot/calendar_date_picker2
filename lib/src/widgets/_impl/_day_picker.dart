@@ -150,7 +150,49 @@ class _DayPickerState extends State<_DayPicker> {
     while (day < daysInMonth) {
       day++;
       if (day < 1) {
-        dayItems.add(Container());
+        Widget dayWidget = Container();
+        if (widget.config.showOtherMonthDate ?? false) {
+          String monthString = '${widget.displayedMonth.month < 10 ? '0' : ''}${widget.displayedMonth.month}';
+          DateTime firstDateOfMonth = DateTime.parse('${widget.displayedMonth.year}-$monthString-01');
+          DateTime lastMonthDate = firstDateOfMonth.subtract(Duration(days: 1));
+
+          DateTime dayToBuild = lastMonthDate.subtract(Duration(days: day*-1));
+
+          Color dayColor = enabledDayColor;
+
+          var customDayTextStyle =
+              widget.config.dayTextStylePredicate?.call(date: dayToBuild) ??
+                  widget.config.dayTextStyle;
+
+          customDayTextStyle = customDayTextStyle?.copyWith(
+            color: disabledDayColor,
+            fontWeight: FontWeight.normal,
+          );
+          if (widget.config.disabledDayTextStyle != null) {
+            customDayTextStyle = widget.config.disabledDayTextStyle;
+          }
+
+          final dayTextStyle =
+              customDayTextStyle ?? dayStyle.apply(color: dayColor);
+
+          BoxDecoration? decoration;
+          
+          dayWidget = widget.config.dayBuilder?.call(
+                date: dayToBuild,
+                textStyle: dayTextStyle,
+                decoration: decoration,
+                isSelected: false,
+                isDisabled: true,
+                isToday: false,
+              ) ??
+              _buildDefaultDayWidgetContent(
+                decoration,
+                localizations,
+                day,
+                dayTextStyle,
+              );
+        }
+        dayItems.add(dayWidget);
       } else {
         final DateTime dayToBuild = DateTime(year, month, day);
         final bool isDisabled = dayToBuild.isAfter(widget.config.lastDate) ||
@@ -374,6 +416,59 @@ class _DayPickerState extends State<_DayPicker> {
         }
 
         dayItems.add(dayWidget);
+      }
+    }
+    if (widget.config.showOtherMonthDate ?? false) {
+      int nextMonth = month;
+      int nextYear = year;
+      if (month == 12) {
+        nextYear = nextYear + 1;
+        nextMonth = 1;
+      } else {
+        nextMonth = nextMonth + 1;
+      }
+      DateTime firstDayofNextMonth = DateTime(nextYear, nextMonth);
+      int nextMonthDayOffset = getNextMonthDayOffset(firstDayofNextMonth);
+      int plusDate = 0;
+      while(nextMonthDayOffset > 0) {
+        nextMonthDayOffset--;
+
+        Color dayColor = enabledDayColor;
+        DateTime dayToBuild = firstDayofNextMonth.add(Duration(days: plusDate));
+
+        var customDayTextStyle =
+            widget.config.dayTextStylePredicate?.call(date: dayToBuild) ??
+                widget.config.dayTextStyle;
+
+        customDayTextStyle = customDayTextStyle?.copyWith(
+          color: disabledDayColor,
+          fontWeight: FontWeight.normal,
+        );
+        if (widget.config.disabledDayTextStyle != null) {
+          customDayTextStyle = widget.config.disabledDayTextStyle;
+        }
+
+        final dayTextStyle =
+            customDayTextStyle ?? dayStyle.apply(color: dayColor);
+
+        BoxDecoration? decoration;
+        
+        Widget dayWidget = widget.config.dayBuilder?.call(
+              date: dayToBuild,
+              textStyle: dayTextStyle,
+              decoration: decoration,
+              isSelected: false,
+              isDisabled: true,
+              isToday: false,
+            ) ??
+            _buildDefaultDayWidgetContent(
+              decoration,
+              localizations,
+              day,
+              dayTextStyle,
+            );
+        dayItems.add(dayWidget);
+        plusDate++;
       }
     }
 

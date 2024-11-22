@@ -15,6 +15,17 @@ int getMonthFirstDayOffset(int year, int month, int firstDayOfWeekIndex) {
   return (weekdayFromMonday - firstDayOfWeekIndex) % 7;
 }
 
+/// Get the number of days offset for the last day in a month. for next month date
+int getNextMonthDayOffset(DateTime firstDateOfNextMonth) {
+  // 0-based day of week for the month and year, with 0 representing Monday.
+  final int weekdayFromSunday = (7 - firstDateOfNextMonth.weekday).abs();
+
+  // Number of days between the first day of week appearing on the calendar,
+  // and the day corresponding to the first of the month.
+  return (weekdayFromSunday) % 7;
+}
+
+
 /// Get short month format for the given locale.
 DateFormat getLocaleShortMonthFormat(Locale locale) {
   final String localeName = Intl.canonicalizedLocale(locale.toString());
