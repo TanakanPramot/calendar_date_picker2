@@ -327,8 +327,8 @@ class _CalendarViewState extends State<_CalendarView> {
             padding: widget.config.centerAlignModePicker != true
                 ? const EdgeInsetsDirectional.only(start: 16, end: 4)
                 : const EdgeInsetsDirectional.only(start: 8, end: 8),
-            height: (widget.config.controlsHeight ?? _subHeaderHeight),
-            child: Row(
+            height: (widget.config.hideControls ?? false) ? 0 : (widget.config.controlsHeight ?? _subHeaderHeight),
+            child: (widget.config.hideControls ?? false) ? const SizedBox() : Row(
               children: <Widget>[
                 if (widget.config.centerAlignModePicker != true) const Spacer(),
                 IconButton(

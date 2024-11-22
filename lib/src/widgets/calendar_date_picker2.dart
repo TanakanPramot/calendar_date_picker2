@@ -22,7 +22,7 @@ const Duration _monthScrollDuration = Duration(milliseconds: 200);
 
 const double _dayPickerRowHeight = 42.0;
 const int _maxDayPickerRowCount = 6; // A 31 day month that starts on Saturday.
-const double _monthPickerHorizontalPadding = 8.0;
+const double _monthPickerHorizontalPadding = 0.0;
 
 const int _yearPickerColumnCount = 3;
 const double _yearPickerPadding = 16.0;
@@ -381,12 +381,12 @@ class _CalendarDatePicker2State extends State<CalendarDatePicker2> {
         : Stack(
             children: <Widget>[
               SizedBox(
-                height: (widget.config.controlsHeight ?? _subHeaderHeight) +
+                height: ((widget.config.hideControls ?? false) ? 0 : widget.config.controlsHeight ?? _subHeaderHeight) +
                     maxContentHeight,
                 child: _buildPicker(),
               ),
               // Put the mode toggle button on top so that it won't be covered up by the _CalendarView
-              _DatePickerModeToggleButton(
+              (widget.config.hideControls ?? false) ? SizedBox() : _DatePickerModeToggleButton(
                 config: widget.config,
                 mode: _mode,
                 monthDate: _currentDisplayedMonthDate,

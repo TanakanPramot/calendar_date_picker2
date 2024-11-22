@@ -185,6 +185,7 @@ class CalendarDatePicker2Config {
     this.selectedRangeHighlightBuilder,
     this.selectedRangeDecorationPredicate,
     this.showOtherMonthDate,
+    this.hideControls,
   })  : calendarType = calendarType ?? CalendarDatePicker2Type.single,
         firstDate = DateUtils.dateOnly(firstDate ?? DateTime(1970)),
         lastDate =
@@ -407,6 +408,9 @@ class CalendarDatePicker2Config {
   // Flag to show previous and next month date
   final bool? showOtherMonthDate;
 
+  // Flag to hide controls
+  final bool? hideControls;
+
   /// Copy the current [CalendarDatePicker2Config] with some new values
   CalendarDatePicker2Config copyWith({
     CalendarDatePicker2Type? calendarType,
@@ -477,6 +481,7 @@ class CalendarDatePicker2Config {
     SelectedRangeHighlightBuilder? selectedRangeHighlightBuilder,
     SelectedRangeDecorationPredicate? selectedRangeDecorationPredicate,
     bool? showOtherMonthDate,
+    bool? hideControls,
   }) {
     return CalendarDatePicker2Config(
       calendarType: calendarType ?? this.calendarType,
@@ -577,6 +582,7 @@ class CalendarDatePicker2Config {
       selectedRangeDecorationPredicate: selectedRangeDecorationPredicate ??
           this.selectedRangeDecorationPredicate,
       showOtherMonthDate: showOtherMonthDate ?? this.showOtherMonthDate,
+      hideControls: hideControls ?? this.hideControls,
     );
   }
 }
@@ -653,6 +659,7 @@ class CalendarDatePicker2WithActionButtonsConfig
     SelectedRangeHighlightBuilder? selectedRangeHighlightBuilder,
     SelectedRangeDecorationPredicate? selectedRangeDecorationPredicate,
     bool? showOtherMonthDate,
+    bool? hideControls,
     this.gapBetweenCalendarAndButtons,
     this.cancelButtonTextStyle,
     this.cancelButton,
@@ -839,6 +846,7 @@ class CalendarDatePicker2WithActionButtonsConfig
     SelectedRangeHighlightBuilder? selectedRangeHighlightBuilder,
     SelectedRangeDecorationPredicate? selectedRangeDecorationPredicate,
     bool? showOtherMonthDate,
+    bool? hideControls,
   }) {
     return CalendarDatePicker2WithActionButtonsConfig(
       calendarType: calendarType ?? this.calendarType,
@@ -952,6 +960,7 @@ class CalendarDatePicker2WithActionButtonsConfig
       selectedRangeDecorationPredicate: selectedRangeDecorationPredicate ??
           this.selectedRangeDecorationPredicate,
       showOtherMonthDate: showOtherMonthDate ?? this.showOtherMonthDate,
+      hideControls: hideControls ?? this.hideControls,
     );
   }
 }
